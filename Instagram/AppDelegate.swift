@@ -7,15 +7,36 @@
 //
 
 import UIKit
-
+import Parse
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        Parse.initialize(
+            with: ParseClientConfiguration(block: { (configuration:ParseMutableClientConfiguration) -> Void in
+                configuration.applicationId = "Instagram"
+                configuration.clientKey = "djxhfjdsfhidsuf"  // set to nil assuming you have not set clientKey
+                configuration.server = "https://frozen-river-17044.herokuapp.com/parse"
+            })
+        )
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        if PFUser.current() != nil{
+            let tabBarView = storyboard.instantiateViewController(withIdentifier: "TabBarController")
+            window?.rootViewController = tabBarView
+        }else{
+            let view = storyboard.instantiateInitialViewController()
+            window?.rootViewController = view
+        }
+        
+        
+    
+        
         return true
     }
 
